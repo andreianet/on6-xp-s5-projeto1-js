@@ -207,11 +207,11 @@ const pessoa2 = {
   },
   parar: () => pessoa.andando = false,
   apresentacao: () => {
-    const anos = (pessoa.idade === 1) ? 'ano' : 'anos'
+    const anos = (this.idade === 1) ? 'ano' : 'anos'
   
-    const metros = (pessoa.caminhouQuantosMetros <= 1) ? 'metro' : 'metros'
+    const metros = (this.caminhouQuantosMetros <= 1) ? 'metro' : 'metros'
   
-    return `Olá, eu sou ${pessoa.nome} ${pessoa.sobrenome}, tenho ${pessoa.idade} ${anos}, ${pessoa.altura}, meu peso é ${pessoa.peso} e, só hoje, eu já caminhei ${pessoa.caminhouQuantosMetros} ${metros}!`
+    return `Olá, eu sou ${this.nome} ${this.sobrenome}, tenho ${this.idade} ${anos}, ${this.altura}, meu peso é ${pessthisoa.peso} e, só hoje, eu já caminhei ${this.caminhouQuantosMetros} ${metros}!`
   }
 }
 console.log(pessoa2.apresentacao())
