@@ -283,7 +283,7 @@ console.log(segundo);
 console.log(terceiro);
 
 console.log('-----------------------------------------------------')
-
+//ATENÇÃO NESSA PARTE-------------------------------------------------------------------------
 // Possuo 4 tias. Os dados delas estão armazenados no array de objetos dentro do arquivo db.js
 // Vamos importar esses dados para podermos usá-los durante nosso exercício de revisão.
 const db = require('./db')
@@ -305,8 +305,6 @@ console.table(tias)
 
 ///table das listas
 console.table(lista)
-
-
 
 console.log('-----------------------------------------------------')
 console.log('filter()')
