@@ -6,59 +6,94 @@ const readline = require('readline-sync')
 const db = require('./database')
 const { produtos } = require('./database')
 
-
-//console.table(produtos)
 //Listar no console uma tabela contendo os produtos em ordem crescente de preço (do menor ao maior)
-produtos.sort(function (a,b) {
+produtos.sort(function (a, b) {
     return a.preco - b.preco
 })
 console.table(produtos)
 console.log('--------------------------------------')
 
+const array = new Array() //irá lista o novo pedido
+//depois do NÂO ---- cria a classe pedido e trás as informações dentro da tabela  da compra.
+class Pedido {
+    constructor(array) {
+        this.listaProdutos = array
+        this.valorCupom = 0
+        this.dataPedido = new Date().toLocaleDateString('pt-BR')
+    }
+    calcSubtotal() {
+        //Total da compra - //- Calcular o valor do subtotal (sem considerar o desconto)        
+        this.valorCupom = this.listaProdutos.reduce((acumulador, item) => acumulador + (item.preco * item.qtdeProduto), 0);
+    }
+    /*datePedido(){
+        const op = {weekday: 'long', year: 'nummeric', month: 'long', day: 'numeric'}
+        this.dataPedido = this.dataPedido.toLocaleDateString('pt-BR', op)
+    }*/
+    
+}
 
 //Receber via terminal as entradas de `id` e `quantidade` dos produtos a serem adquiridos.
-function compra(){
-    const idProduto   = parseInt(readline.question("Digite o ID do produto: "))
+//Create function compra()
+function compra() {
+    const idProduto   = parseInt(readline.question('Digite o ID do produto: ')) 
     const qtdeProduto = parseInt(readline.question("Digite a quantidade do produto desejado: "))
-    let novaCompra    = readline.question("Deseja continuar comprando, S ou N: ")
+    
+    const procurar = produto => produto.id === idProduto
+    const produtoEncontrado = produtos.find(procurar)
+    //VALIDANDO
+    if (!idProduto) {
+        console.log("Error - Produto não encontrado")        
+    }else{
+        const prodPedido = { ...produtoEncontrado, qtde: qtdeProduto}
+        array.push(prodPedido)
+    }
+    
 
-
+    const novaCompra = readline.question("Deseja continuar comprando, S ou N: ")
     if (novaCompra === 'S') {
-        return compra()    
-        //console.log(`${valorCompra}`)
-    }else if (novaCompra === 'N') {
-        // calcular o desconto
-//Perguntar se a cliente possue cupom de desconto. Caso a cliente digite 10, significa que terá 10% de desconto
-        //const subTotal = 0
-        let desconto    = parseInt(readline.question("Posui cupom de desconto: "))
-        if (desconto >= 15) {
+        return compra()
+        return procurar() 
+
+    } else if (novaCompra === 'N') {
+        // calcular o desconto fora do IF
+        //Perguntar se a cliente possue cupom de desconto. Caso a cliente digite 10, significa que terá 10% de desconto        
+        const cupdesconto = parseInt(readline.question("Possui cupom de desconto? Digite o valor : "))
+        if (cupdesconto > 0 && cupdesconto >= 15) {
             console.log('Cupom inválido!')
-        }else{
-            console.log("Cupom valido!")
-            //return (subTotal*desconto/100 `${subTotal}`).parseFloat()
-            sTotal()
-        }        
+        } else {           
+            console.log("Cupom Valido!")            
+        }
         return 'Compra Finalizada!!'
     }
 }
 console.log(compra())
 
+const pedido = new Pedido(array)
+console.table(pedido.listaProdutos)
 
-//Total da compra - //- Calcular o valor do subtotal (sem considerar o desconto)
-const subtotal = produtos.reduce(sTotal, 0);
-function sTotal(total, produtos) {
-    return (produtos.preco * qtdeProduto)
-}
-sTotal()
-//const valorfinal []
-//const valorfinal = (acumulador, produto) => + produto.preco
+//Trazendo a data - Exemplo: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+//pedido.datePedido()
+//console.log(new Intl.DateTimeFormat('pt-BR').format(`${dataPedido}`))
+//console.log((`Pedido realizo em ${pedido.dataPedido}`))
 
-//Com total e desconto
-function Total(){
-    const valorCompra = parseFloat(sTotal * desconto/100).toFixed(2)
-    return valorCompra
-    //console.log(`${idProduto}`)
-    //console.log(`${valorCompra}`)
-}
-console.log(Total())
+console.log('-----------------TOTAIS FINAIS DA COMPRA-----------------')
+
+//Subtotal - 
+pedido.calcSubtotal()
+console.log("O SubTotal da sua compra é "  + parseInt(pedido.valorCupom))
+
+//valor do cupom
+console.log("Cupom informado: " + compra.cupdesconto)
+//Desconto
+const desconto = ((pedido.calcSubtotal * compra.cupdesconto) / 100)
+console.log(`Valor do desconto é ${desconto}`)
+
+//Total da Compra
+const totaldaCompra = parseFloat(pedido.calcSubtotal - desconto)
+console.log(`Valor total da sua compra é ${totaldaCompra.toFixed(2)}`)
+
+
+
+
+
 
