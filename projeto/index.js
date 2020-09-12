@@ -27,34 +27,34 @@ class Pedido {
         this.valorCupom = this.listaProdutos.reduce((acumulador, item) => acumulador + (item.preco * item.qtdeProduto), 0);
         parseInt(this.valorCupom)
     }
-    datePedido(){
-        const op = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+    datePedido() {
+        const op = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
         this.dataPedido = this.dataPedido.toLocaleDateString('pt-BR', op)
     }
-    
+
 }
 //Receber via terminal as entradas de `id` e `quantidade` dos produtos a serem adquiridos.
 //Create function compra()
 function compra() {
-    const idProduto   = parseInt(readline.question('Digite o ID do produto: ')) 
+    const idProduto = parseInt(readline.question('Digite o ID do produto: '))
     const qtdeProduto = parseInt(readline.question("Digite a quantidade do produto desejado: "))
-    
+
     const procurar = produto => produto.id === idProduto
     const produtoEncontrado = produtos.find(procurar)
 
     //VALIDANDO
     if (!idProduto) {
-        console.log("Error - Produto não encontrado")        
-    }else{
-        const prodPedido = { ...produtoEncontrado, qtde: qtdeProduto}
+        console.log("Error - Produto não encontrado")
+    } else {
+        const prodPedido = { ...produtoEncontrado, qtde: qtdeProduto }
         array.push(prodPedido) //atribuindo numa nova lista os pedidos
-    } 
-    
+    }
+
     //Verificando uma nova compra
     const novaCompra = readline.question("Deseja continuar comprando, S ou N: ")
     if (novaCompra === 'S') {
         return compra()
-        return procurar() 
+        return procurar()
 
     } else if (novaCompra === 'N') {
         // calcular o desconto fora do IF
@@ -62,9 +62,9 @@ function compra() {
         const cupdesconto = readline.question("Possui cupom de desconto? Digite o valor : ")
         if (cupdesconto > 0 && cupdesconto >= 15) {
             console.log('Cupom inválido!')
-        } else { 
-                      
-            console.log("Cupom Valido!")            
+        } else {
+
+            console.log("Cupom Valido!")
         }
         return 'Compra Finalizada!!'
     }
@@ -87,11 +87,12 @@ pedido.calcSubtotal()
 console.log(`O SubTotal da sua compra é ${pedido.valorCupom.toFixed(2)}`)
 
 //valor do cupom
-console.log('Cupom informado: ' + parseInt(compra.cupdesconto))
+console.log('Cupom informado: ' + compra.cupdesconto)
 
 //Desconto
-const desconto = parseInt(pedido.calcSubtotal * (compra.cupdesconto/ 100))
+const desconto = parseInt(pedido.calcSubtotal * (compra.cupdesconto / 100))  
 console.log(`Valor do desconto é ${desconto.toFixed(2)}`)
+
 
 //Total da Compra
 const totaldaCompra = parseInt(pedido.calcSubtotal - desconto)
